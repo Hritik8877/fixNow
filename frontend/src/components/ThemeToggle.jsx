@@ -7,11 +7,11 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative w-14 h-7 rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-1 transition-colors duration-300 focus:outline-none"
+      className="relative w-14 h-7 rounded-full bg-surface-container-low border border-outline-variant p-1 transition-colors duration-300 focus:outline-none"
       aria-label="Toggle Theme"
     >
       <div
-        className={`w-5 h-5 rounded-full bg-white dark:bg-zinc-900 shadow-sm flex items-center justify-center transition-transform duration-300 ${
+        className={`w-5 h-5 rounded-full bg-surface shadow-sm flex items-center justify-center transition-transform duration-300 ${
           theme === 'dark' ? 'translate-x-7' : 'translate-x-0'
         }`}
       >

@@ -94,43 +94,43 @@ export default function TechnicianDashboard() {
   };
 
   const stats = [
-    { label: 'Pending', value: pending.length, icon: Clock, color: 'bg-amber-50 text-amber-600' },
-    { label: 'In Progress', value: inProgress.length + accepted.length, icon: Package, color: 'bg-blue-50 text-blue-600' },
-    { label: 'Completed', value: completed.length, icon: CheckCircle2, color: 'bg-emerald-50 text-emerald-600' },
-    { label: 'My Services', value: techServices.length, icon: Briefcase, color: 'bg-violet-50 text-violet-600' },
+    { label: 'Pending', value: pending.length, icon: Clock, color: 'bg-amber-500/10 text-amber-500' },
+    { label: 'In Progress', value: inProgress.length + accepted.length, icon: Package, color: 'bg-blue-500/10 text-blue-500' },
+    { label: 'Completed', value: completed.length, icon: CheckCircle2, color: 'bg-emerald-500/10 text-emerald-500' },
+    { label: 'My Services', value: techServices.length, icon: Briefcase, color: 'bg-violet-500/10 text-violet-500' },
   ];
 
   if (bLoading && !bFetched) return <div className="flex min-h-[calc(100vh-4rem)]"><Sidebar role="technician" /><main className="flex-1"><Loader /></main></div>;
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)]" data-testid="technician-dashboard">
+    <div className="flex min-h-[calc(100vh-4rem)] bg-background" data-testid="technician-dashboard">
       <Sidebar role="technician" />
       <main className="flex-1 p-6 md:p-8 lg:p-10 overflow-auto">
         <Tabs value={tab} onValueChange={setTab}>
           <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight" style={{ fontFamily: 'Outfit' }}>Technician Dashboard</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight" style={{ fontFamily: 'Outfit' }}>Technician Dashboard</h1>
               <p className="text-sm text-zinc-500 mt-1">Manage your services and orders</p>
             </div>
-            <TabsList className="bg-zinc-100 rounded-xl h-10 p-1" data-testid="tech-dashboard-tabs">
-              <TabsTrigger value="overview" className="rounded-lg text-xs px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm">Overview</TabsTrigger>
-              <TabsTrigger value="orders" className="rounded-lg text-xs px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm">Orders</TabsTrigger>
-              <TabsTrigger value="services" className="rounded-lg text-xs px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm">My Services</TabsTrigger>
+            <TabsList className="bg-surface-container-low rounded-xl h-10 p-1" data-testid="tech-dashboard-tabs">
+              <TabsTrigger value="overview" className="rounded-lg text-xs px-4 data-[state=active]:bg-surface data-[state=active]:shadow-sm data-[state=active]:text-foreground">Overview</TabsTrigger>
+              <TabsTrigger value="orders" className="rounded-lg text-xs px-4 data-[state=active]:bg-surface data-[state=active]:shadow-sm data-[state=active]:text-foreground">Orders</TabsTrigger>
+              <TabsTrigger value="services" className="rounded-lg text-xs px-4 data-[state=active]:bg-surface data-[state=active]:shadow-sm data-[state=active]:text-foreground">My Services</TabsTrigger>
             </TabsList>
           </div>
 
           <TabsContent value="overview">
-            <div className="bg-white rounded-2xl border border-zinc-100 p-6 mb-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            <div className="bg-surface rounded-2xl border border-outline-variant p-6 mb-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
               <div className="flex items-center gap-4">
-                <Avatar className="w-16 h-16 border-2 border-white shadow-sm">
+                <Avatar className="w-16 h-16 border-2 border-surface shadow-sm">
                   {user?.profileImage ? (
                     <img src={user.profileImage} alt={user.name} className="w-full h-full object-cover" />
                   ) : (
-                    <AvatarFallback className="bg-blue-50 text-blue-600 text-xl font-semibold">{user?.name?.split(' ').map(n => n[0]).join('') || 'T'}</AvatarFallback>
+                    <AvatarFallback className="bg-blue-500/10 text-blue-500 text-xl font-semibold">{user?.name?.split(' ').map(n => n[0]).join('') || 'T'}</AvatarFallback>
                   )}
                 </Avatar>
                 <div>
-                  <h2 className="text-xl font-semibold text-zinc-900" style={{ fontFamily: 'Outfit' }}>{user?.name}</h2>
+                  <h2 className="text-xl font-semibold text-foreground" style={{ fontFamily: 'Outfit' }}>{user?.name}</h2>
                   <p className="text-sm text-zinc-500">{user?.specialization || 'Technician'}</p>
                   <div className="flex items-center gap-3 mt-1">
                     <span className="flex items-center gap-1 text-sm"><Star className="w-4 h-4 fill-amber-400 text-amber-400" /> {user?.rating || 4.5}</span>
@@ -142,17 +142,17 @@ export default function TechnicianDashboard() {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               {stats.map(stat => (
-                <div key={stat.label} className="bg-white rounded-2xl border border-zinc-100 p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)]" data-testid={`tech-stat-${stat.label.toLowerCase().replace(/\s/g, '-')}`}>
+                <div key={stat.label} className="bg-surface rounded-2xl border border-outline-variant p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)]" data-testid={`tech-stat-${stat.label.toLowerCase().replace(/\s/g, '-')}`}>
                   <div className={`w-10 h-10 rounded-xl ${stat.color} flex items-center justify-center mb-3`}>
                     <stat.icon className="w-5 h-5" strokeWidth={1.5} />
                   </div>
-                  <p className="text-2xl font-bold text-zinc-900" style={{ fontFamily: 'Outfit' }}>{stat.value}</p>
+                  <p className="text-2xl font-bold text-foreground" style={{ fontFamily: 'Outfit' }}>{stat.value}</p>
                   <p className="text-xs text-zinc-400 mt-0.5">{stat.label}</p>
                 </div>
               ))}
             </div>
 
-            <h2 className="text-lg font-semibold text-zinc-900 mb-4" style={{ fontFamily: 'Outfit' }}>Incoming Orders</h2>
+            <h2 className="text-lg font-semibold text-foreground mb-4" style={{ fontFamily: 'Outfit' }}>Incoming Orders</h2>
             {pending.length === 0 ? (
               <EmptyState title="No pending orders" description="New orders will appear here" />
             ) : (
@@ -166,7 +166,7 @@ export default function TechnicianDashboard() {
             <div className="space-y-6">
               {[{ label: 'Pending', items: pending }, { label: 'Accepted', items: accepted }, { label: 'In Progress', items: inProgress }, { label: 'Completed', items: completed }].map(group => (
                 <div key={group.label}>
-                  <h3 className="font-semibold text-zinc-900 mb-3" style={{ fontFamily: 'Outfit' }}>{group.label} ({group.items.length})</h3>
+                  <h3 className="font-semibold text-foreground mb-3" style={{ fontFamily: 'Outfit' }}>{group.label} ({group.items.length})</h3>
                   {group.items.length === 0 ? <p className="text-sm text-zinc-400 mb-4">No {group.label.toLowerCase()} orders</p> : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
                       {group.items.map(b => <BookingCard key={b._id} booking={b} showActions={group.label !== 'Completed'} onStatusChange={handleStatusChange} />)}
@@ -179,7 +179,7 @@ export default function TechnicianDashboard() {
 
           <TabsContent value="services">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-zinc-900" style={{ fontFamily: 'Outfit' }}>My Services ({techServices.length})</h3>
+              <h3 className="font-semibold text-foreground" style={{ fontFamily: 'Outfit' }}>My Services ({techServices.length})</h3>
               <Dialog open={isAddServiceOpen} onOpenChange={setIsAddServiceOpen}>
                 <DialogTrigger asChild>
                   <Button className="rounded-xl bg-blue-600 hover:bg-blue-700 gap-1 text-xs" data-testid="add-service-btn"><Plus className="w-3.5 h-3.5" /> Add Service</Button>
@@ -222,13 +222,13 @@ export default function TechnicianDashboard() {
             {techServices.length === 0 ? <EmptyState title="No services yet" description="Add your first service" /> : (
               <div className="space-y-3">
                 {techServices.map(s => (
-                  <div key={s._id} className="bg-white rounded-2xl border border-zinc-100 p-5 flex items-center justify-between shadow-[0_4px_20px_rgba(0,0,0,0.03)]" data-testid={`tech-service-${s._id}`}>
+                  <div key={s._id} className="bg-surface rounded-2xl border border-outline-variant p-5 flex items-center justify-between shadow-[0_4px_20px_rgba(0,0,0,0.03)]" data-testid={`tech-service-${s._id}`}>
                     <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0"><img src={s.image} alt={s.name} className="w-full h-full object-cover" /></div>
+                      <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-outline-variant"><img src={s.image} alt={s.name} className="w-full h-full object-cover" /></div>
                       <div>
-                        <h4 className="font-semibold text-sm text-zinc-900">{s.name}</h4>
+                        <h4 className="font-semibold text-sm text-foreground">{s.name}</h4>
                         <div className="flex items-center gap-3 mt-1">
-                          <span className="text-sm font-medium text-zinc-900">₹{s.price?.toLocaleString()}</span>
+                          <span className="text-sm font-medium text-foreground">₹{s.price?.toLocaleString()}</span>
                           <span className="flex items-center gap-1 text-xs text-zinc-400"><Star className="w-3 h-3 fill-amber-400 text-amber-400" /> {s.rating}</span>
                         </div>
                       </div>

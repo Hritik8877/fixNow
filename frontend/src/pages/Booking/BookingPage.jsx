@@ -209,13 +209,13 @@ export default function BookingPage() {
           </div>
 
           <aside className="lg:col-span-4 lg:sticky lg:top-12">
-            <div className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white rounded-[48px] p-10 shadow-xl border border-zinc-100 dark:border-zinc-800 relative overflow-hidden" data-testid="order-summary">
+            <div className="bg-surface text-foreground rounded-[48px] p-10 shadow-xl border border-outline-variant relative overflow-hidden" data-testid="order-summary">
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-[60px]" />
 
-              <h2 className="text-2xl font-black mb-8 font-manrope text-zinc-900 dark:text-white">Order Summary</h2>
+              <h2 className="text-2xl font-black mb-8 font-manrope text-foreground">Order Summary</h2>
 
               <div className="flex gap-5 mb-8">
-                <div className="w-20 h-20 rounded-[24px] overflow-hidden shrink-0 border border-zinc-100 dark:border-white/10">
+                <div className="w-20 h-20 rounded-[24px] overflow-hidden shrink-0 border border-outline-variant">
                   <img src={service.image} alt={service.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex flex-col justify-center">
@@ -227,7 +227,7 @@ export default function BookingPage() {
                 </div>
               </div>
 
-              <div className="space-y-4 py-8 border-y border-zinc-100 dark:border-white/5 font-inter">
+              <div className="space-y-4 py-8 border-y border-outline-variant font-inter">
                 <div className="flex justify-between items-center">
                   <span className="text-zinc-500 text-sm font-medium">Scheduled Visit</span>
                   <span className="text-current font-bold">{date ? date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '---'}</span>

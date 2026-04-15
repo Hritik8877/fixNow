@@ -15,11 +15,11 @@ import { toast } from 'sonner';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const statusColors = {
-  pending: 'bg-amber-50 text-amber-700 border-amber-200',
-  accepted: 'bg-blue-50 text-blue-700 border-blue-200',
-  'in-progress': 'bg-blue-50 text-blue-700 border-blue-200',
-  completed: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-  cancelled: 'bg-red-50 text-red-700 border-red-200',
+  pending: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+  accepted: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+  'in-progress': 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+  completed: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+  cancelled: 'bg-red-500/10 text-red-500 border-red-500/20',
 };
 
 const SUPER_ADMIN_EMAIL = import.meta.env.VITE_SUPER_ADMIN_EMAIL;
@@ -96,49 +96,49 @@ export default function AdminDashboard() {
   });
 
   const statCards = stats ? [
-    { label: 'Total Users', value: stats.totalUsers, icon: Users, color: 'bg-blue-50 text-blue-600', change: '+12%' },
-    { label: 'Technicians', value: stats.totalTechnicians, icon: Package, color: 'bg-violet-50 text-violet-600', change: '+8%' },
-    { label: 'Total Bookings', value: stats.totalBookings, icon: Clock, color: 'bg-amber-50 text-amber-600', change: '+24%' },
-    { label: 'Revenue', value: `₹${stats.totalRevenue?.toLocaleString()}`, icon: IndianRupee, color: 'bg-emerald-50 text-emerald-600', change: '+18%' },
+    { label: 'Total Users', value: stats.totalUsers, icon: Users, color: 'bg-blue-500/10 text-blue-500', change: '+12%' },
+    { label: 'Technicians', value: stats.totalTechnicians, icon: Package, color: 'bg-violet-500/10 text-violet-500', change: '+8%' },
+    { label: 'Total Bookings', value: stats.totalBookings, icon: Clock, color: 'bg-amber-500/10 text-amber-500', change: '+24%' },
+    { label: 'Revenue', value: `₹${stats.totalRevenue?.toLocaleString()}`, icon: IndianRupee, color: 'bg-emerald-500/10 text-emerald-500', change: '+18%' },
   ] : [];
 
   if (loading) return <div className="flex min-h-[calc(100vh-4rem)]"><Sidebar role="admin" /><main className="flex-1"><Loader /></main></div>;
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)]" data-testid="admin-dashboard">
+    <div className="flex min-h-[calc(100vh-4rem)] bg-background" data-testid="admin-dashboard">
       <Sidebar role="admin" />
       <main className="flex-1 p-6 md:p-8 lg:p-10 overflow-auto">
         <Tabs value={tab} onValueChange={setTab}>
           <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 tracking-tight" style={{ fontFamily: 'Outfit' }}>Admin Dashboard</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight" style={{ fontFamily: 'Outfit' }}>Admin Dashboard</h1>
               <p className="text-sm text-zinc-500 mt-1">Platform overview and management</p>
             </div>
-            <TabsList className="bg-zinc-100 rounded-xl h-10 p-1" data-testid="admin-dashboard-tabs">
-              <TabsTrigger value="overview" className="rounded-lg text-xs px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm">Overview</TabsTrigger>
-              <TabsTrigger value="users" className="rounded-lg text-xs px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm">Users</TabsTrigger>
-              <TabsTrigger value="bookings" className="rounded-lg text-xs px-4 data-[state=active]:bg-white data-[state=active]:shadow-sm">Bookings</TabsTrigger>
+            <TabsList className="bg-surface-container-low rounded-xl h-10 p-1" data-testid="admin-dashboard-tabs">
+              <TabsTrigger value="overview" className="rounded-lg text-xs px-4 data-[state=active]:bg-surface data-[state=active]:shadow-sm data-[state=active]:text-foreground">Overview</TabsTrigger>
+              <TabsTrigger value="users" className="rounded-lg text-xs px-4 data-[state=active]:bg-surface data-[state=active]:shadow-sm data-[state=active]:text-foreground">Users</TabsTrigger>
+              <TabsTrigger value="bookings" className="rounded-lg text-xs px-4 data-[state=active]:bg-surface data-[state=active]:shadow-sm data-[state=active]:text-foreground">Bookings</TabsTrigger>
             </TabsList>
           </div>
 
           <TabsContent value="overview">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               {statCards.map(stat => (
-                <div key={stat.label} className="bg-white rounded-2xl border border-zinc-100 p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)]" data-testid={`admin-stat-${stat.label.toLowerCase().replace(/\s/g, '-')}`}>
+                <div key={stat.label} className="bg-surface rounded-2xl border border-outline-variant p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)]" data-testid={`admin-stat-${stat.label.toLowerCase().replace(/\s/g, '-')}`}>
                   <div className="flex items-center justify-between mb-3">
                     <div className={`w-10 h-10 rounded-xl ${stat.color} flex items-center justify-center`}><stat.icon className="w-5 h-5" strokeWidth={1.5} /></div>
-                    <div className="flex items-center gap-1 text-emerald-600 text-xs font-medium"><TrendingUp className="w-3 h-3" /> {stat.change}</div>
+                    <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-500 text-xs font-medium"><TrendingUp className="w-3 h-3" /> {stat.change}</div>
                   </div>
-                  <p className="text-2xl font-bold text-zinc-900" style={{ fontFamily: 'Outfit' }}>{stat.value}</p>
+                  <p className="text-2xl font-bold text-foreground" style={{ fontFamily: 'Outfit' }}>{stat.value}</p>
                   <p className="text-xs text-zinc-400 mt-0.5">{stat.label}</p>
                 </div>
               ))}
             </div>
-            <div className="bg-white rounded-2xl border border-zinc-100 p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
-              <h2 className="font-semibold text-zinc-900 mb-4" style={{ fontFamily: 'Outfit' }}>Recent Bookings</h2>
+            <div className="bg-surface rounded-2xl border border-outline-variant p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+              <h2 className="font-semibold text-foreground mb-4" style={{ fontFamily: 'Outfit' }}>Recent Bookings</h2>
               <div className="overflow-x-auto">
                 <Table>
-                  <TableHeader><TableRow className="border-zinc-100">
+                  <TableHeader><TableRow className="border-outline-variant">
                     <TableHead className="text-xs font-medium text-zinc-400">Service</TableHead>
                     <TableHead className="text-xs font-medium text-zinc-400">Customer</TableHead>
                     <TableHead className="text-xs font-medium text-zinc-400">Date</TableHead>
@@ -147,11 +147,11 @@ export default function AdminDashboard() {
                   </TableRow></TableHeader>
                   <TableBody>
                     {allBookings.slice(0, 5).map(b => (
-                      <TableRow key={b._id} className="border-zinc-50">
-                        <TableCell className="text-sm font-medium text-zinc-900">{b.serviceId?.name || 'N/A'}</TableCell>
+                      <TableRow key={b._id} className="border-outline-variant/10">
+                        <TableCell className="text-sm font-medium text-foreground">{b.serviceId?.name || 'N/A'}</TableCell>
                         <TableCell className="text-sm text-zinc-500">{b.userId?.name || 'N/A'}</TableCell>
                         <TableCell className="text-sm text-zinc-500">{b.date}</TableCell>
-                        <TableCell className="text-sm font-medium text-zinc-900">₹{b.total?.toLocaleString()}</TableCell>
+                        <TableCell className="text-sm font-medium text-foreground">₹{b.total?.toLocaleString()}</TableCell>
                         <TableCell><Badge className={`rounded-full text-[10px] uppercase tracking-wider border ${statusColors[b.status]}`}>{b.status}</Badge></TableCell>
                       </TableRow>
                     ))}
@@ -162,12 +162,12 @@ export default function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="users">
-            <div className="bg-white rounded-2xl border border-zinc-100 p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            <div className="bg-surface rounded-2xl border border-outline-variant p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
               <div className="flex items-center gap-3 mb-6 flex-wrap">
-                <div className="flex items-center gap-2 bg-zinc-50 rounded-xl border border-zinc-200 px-4 flex-1 min-w-[200px] max-w-md">
+                <div className="flex items-center gap-2 bg-surface-container-low rounded-xl border border-outline-variant px-4 flex-1 min-w-[200px] max-w-md">
                   <Search className="w-4 h-4 text-zinc-400" />
                   <Input placeholder="Search users..." value={searchUsers} onChange={e => setSearchUsers(e.target.value)}
-                    className="border-0 bg-transparent shadow-none h-10 px-0 focus-visible:ring-0" data-testid="admin-search-users" />
+                    className="border-0 bg-transparent shadow-none h-10 px-0 focus-visible:ring-0 text-foreground" data-testid="admin-search-users" />
                 </div>
                 {isSuperAdmin && (
                   <Dialog open={isAddAdminOpen} onOpenChange={setIsAddAdminOpen}>
@@ -198,8 +198,8 @@ export default function AdminDashboard() {
                     variant={roleFilter === r.value ? "default" : "outline"}
                     size="sm"
                     className={`rounded-xl h-8 px-4 text-xs cursor-pointer ${roleFilter === r.value
-                      ? "bg-zinc-900 text-white hover:bg-zinc-800 shadow-sm"
-                      : "text-zinc-500 hover:bg-zinc-50 border-zinc-200"
+                      ? "bg-foreground text-background hover:opacity-90 shadow-sm"
+                      : "text-zinc-500 hover:bg-surface-container-low border-outline-variant"
                       }`}
                     onClick={() => setRoleFilter(r.value)}
                   >
@@ -218,21 +218,21 @@ export default function AdminDashboard() {
                   </TableRow></TableHeader>
                   <TableBody>
                     {filteredUsers.map(u => (
-                      <TableRow key={u._id} className="border-zinc-50">
+                      <TableRow key={u._id} className="border-outline-variant/10">
                         <TableCell>
-                          <Avatar className="w-8 h-8 border border-zinc-100">
+                          <Avatar className="w-8 h-8 border border-outline-variant">
                             {u.profileImage ? (
                               <img src={u.profileImage} alt={u.name} className="w-full h-full object-cover" />
                             ) : (
-                              <AvatarFallback className="bg-zinc-100 text-zinc-500 text-[10px] font-semibold">
+                              <AvatarFallback className="bg-surface-container-high text-zinc-500 text-[10px] font-semibold">
                                 {u.name?.split(' ').map(n => n[0]).join('').toUpperCase()}
                               </AvatarFallback>
                             )}
                           </Avatar>
                         </TableCell>
-                        <TableCell className="text-sm font-medium text-zinc-900">{u.name}</TableCell>
+                        <TableCell className="text-sm font-medium text-foreground">{u.name}</TableCell>
                         <TableCell className="text-sm text-zinc-500">{u.email}</TableCell>
-                        <TableCell><Badge className={`rounded-full text-[10px] uppercase tracking-wider border ${u.role === 'admin' ? 'bg-violet-50 text-violet-700 border-violet-200' : u.role === 'technician' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-zinc-100 text-zinc-700 border-zinc-200'}`}>{u.role}</Badge></TableCell>
+                        <TableCell><Badge className={`rounded-full text-[10px] uppercase tracking-wider border ${u.role === 'admin' ? 'bg-violet-500/10 text-violet-500 border-violet-500/20' : u.role === 'technician' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' : 'bg-surface-container-high text-zinc-500 border-outline-variant'}`}>{u.role}</Badge></TableCell>
                         <TableCell className="text-sm text-zinc-500">{u.phone}</TableCell>
                       </TableRow>
                     ))}
@@ -243,12 +243,12 @@ export default function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="bookings">
-            <div className="bg-white rounded-2xl border border-zinc-100 p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
+            <div className="bg-surface rounded-2xl border border-outline-variant p-6 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
               <div className="flex items-center gap-3 mb-6">
-                <div className="flex items-center gap-2 bg-zinc-50 rounded-xl border border-zinc-200 px-4 flex-1 max-w-md">
+                <div className="flex items-center gap-2 bg-surface-container-low rounded-xl border border-outline-variant px-4 flex-1 max-w-md">
                   <Search className="w-4 h-4 text-zinc-400" />
                   <Input placeholder="Search bookings..." value={searchBookings} onChange={e => setSearchBookings(e.target.value)}
-                    className="border-0 bg-transparent shadow-none h-10 px-0 focus-visible:ring-0" data-testid="admin-search-bookings" />
+                    className="border-0 bg-transparent shadow-none h-10 px-0 focus-visible:ring-0 text-foreground" data-testid="admin-search-bookings" />
                 </div>
               </div>
               <div className="overflow-x-auto">
@@ -263,11 +263,11 @@ export default function AdminDashboard() {
                   </TableRow></TableHeader>
                   <TableBody>
                     {filteredBookings.map(b => (
-                      <TableRow key={b._id} className="border-zinc-50">
-                        <TableCell className="text-sm font-medium text-zinc-900">{b.serviceId?.name || 'N/A'}</TableCell>
+                      <TableRow key={b._id} className="border-outline-variant/10">
+                        <TableCell className="text-sm font-medium text-foreground">{b.serviceId?.name || 'N/A'}</TableCell>
                         <TableCell className="text-sm text-zinc-500">{b.userId?.name || 'N/A'}</TableCell>
                         <TableCell className="text-sm text-zinc-500">{b.date}</TableCell>
-                        <TableCell className="text-sm font-medium text-zinc-900">₹{b.total?.toLocaleString()}</TableCell>
+                        <TableCell className="text-sm font-medium text-foreground">₹{b.total?.toLocaleString()}</TableCell>
                         <TableCell><Badge className={`rounded-full text-[10px] uppercase tracking-wider border ${statusColors[b.status]}`}>{b.status}</Badge></TableCell>
                         <TableCell>
                           {b.status === 'pending' && (

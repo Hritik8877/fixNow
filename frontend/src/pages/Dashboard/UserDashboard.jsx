@@ -147,9 +147,9 @@ export default function UserDashboard() {
 
   const stats = [
     { label: 'Active', value: activeBookings.length, icon: Clock, color: 'bg-primary/10 text-primary-container' },
-    { label: 'Done', value: completedBookings.length, icon: CheckCircle2, color: 'bg-emerald-50 text-emerald-600' },
-    { label: 'Denied', value: cancelledBookings.length, icon: XCircle, color: 'bg-red-50 text-red-600' },
-    { label: 'Total', value: bookings.length, icon: Package, color: 'bg-zinc-900 text-white' },
+    { label: 'Done', value: completedBookings.length, icon: CheckCircle2, color: 'bg-emerald-500/10 text-emerald-500' },
+    { label: 'Denied', value: cancelledBookings.length, icon: XCircle, color: 'bg-red-500/10 text-red-500' },
+    { label: 'Total', value: bookings.length, icon: Package, color: 'bg-foreground text-background' },
   ];
 
   if (bookingsLoading && !bookingsFetched) return <div className="flex min-h-[calc(100vh-5rem)] bg-background transition-colors duration-500"><Sidebar role="user" /><main className="flex-1"><Loader text="Initializing your concierge..." /></main></div>;
