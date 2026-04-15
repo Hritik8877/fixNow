@@ -35,4 +35,14 @@ const requireRole = (...roles) => {
   };
 };
 
-export { auth, requireRole };
+// Only this specific email is allowed to create new admins
+const SUPER_ADMIN_EMAIL = process.env.SUPER_ADMIN_EMAIL;
+
+const requireSuperAdmin = (req, res, next) => {
+  if (!req.user || req.user.email.toLowerCase() !== SUPER_ADMIN_EMAIL) {
+    return res.status(403).json({ detail: 'Only the super admin can perform this action' });
+  }
+  next();
+};
+
+export { auth, requireRole, requireSuperAdmin };

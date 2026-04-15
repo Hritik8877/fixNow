@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import api from '@/lib/api';
 import Sidebar from '@/layouts/Sidebar';
 import Loader from '@/components/Loader';
@@ -22,8 +22,12 @@ const statusColors = {
   cancelled: 'bg-red-50 text-red-700 border-red-200',
 };
 
+const SUPER_ADMIN_EMAIL = import.meta.env.VITE_SUPER_ADMIN_EMAIL;
+
 export default function AdminDashboard() {
   const [tab, setTab] = useState('overview');
+  const currentUser = useSelector(state => state.auth.user);
+  const isSuperAdmin = currentUser?.email?.toLowerCase() === SUPER_ADMIN_EMAIL;
   const [stats, setStats] = useState(null);
   const [allUsers, setAllUsers] = useState([]);
   const [allBookings, setAllBookings] = useState([]);
@@ -165,20 +169,22 @@ export default function AdminDashboard() {
                   <Input placeholder="Search users..." value={searchUsers} onChange={e => setSearchUsers(e.target.value)}
                     className="border-0 bg-transparent shadow-none h-10 px-0 focus-visible:ring-0" data-testid="admin-search-users" />
                 </div>
-                <Dialog open={isAddAdminOpen} onOpenChange={setIsAddAdminOpen}>
-                  <DialogTrigger asChild>
-                    <Button className="rounded-xl bg-violet-600 hover:bg-violet-700 gap-1 text-xs"><ShieldCheck className="w-4 h-4" /> Add Admin</Button>
-                  </DialogTrigger>
-                  <DialogContent className="rounded-2xl max-w-sm">
-                    <DialogHeader><DialogTitle style={{ fontFamily: 'Outfit' }}>Create Admin Account</DialogTitle></DialogHeader>
-                    <div className="space-y-4 mt-4">
-                      <div><Label className="text-xs font-medium text-zinc-500 mb-2 block">Full Name</Label><Input placeholder="Admin Name" className="rounded-xl" value={newAdmin.name} onChange={e => setNewAdmin({ ...newAdmin, name: e.target.value })} /></div>
-                      <div><Label className="text-xs font-medium text-zinc-500 mb-2 block">Email</Label><Input type="email" placeholder="admin@fixnow.com" className="rounded-xl" value={newAdmin.email} onChange={e => setNewAdmin({ ...newAdmin, email: e.target.value })} /></div>
-                      <div><Label className="text-xs font-medium text-zinc-500 mb-2 block">Password</Label><Input type="password" placeholder="Secure Password" className="rounded-xl" value={newAdmin.password} onChange={e => setNewAdmin({ ...newAdmin, password: e.target.value })} /></div>
-                      <Button className="w-full rounded-xl bg-violet-600 hover:bg-violet-700 mt-2" onClick={handleAddAdmin}>Create Admin</Button>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                {isSuperAdmin && (
+                  <Dialog open={isAddAdminOpen} onOpenChange={setIsAddAdminOpen}>
+                    <DialogTrigger asChild>
+                      <Button className="rounded-xl bg-violet-600 hover:bg-violet-700 gap-1 text-xs"><ShieldCheck className="w-4 h-4" /> Add Admin</Button>
+                    </DialogTrigger>
+                    <DialogContent className="rounded-2xl max-w-sm">
+                      <DialogHeader><DialogTitle style={{ fontFamily: 'Outfit' }}>Create Admin Account</DialogTitle></DialogHeader>
+                      <div className="space-y-4 mt-4">
+                        <div><Label className="text-xs font-medium text-zinc-500 mb-2 block">Full Name</Label><Input placeholder="Admin Name" className="rounded-xl" value={newAdmin.name} onChange={e => setNewAdmin({ ...newAdmin, name: e.target.value })} /></div>
+                        <div><Label className="text-xs font-medium text-zinc-500 mb-2 block">Email</Label><Input type="email" placeholder="admin@fixnow.com" className="rounded-xl" value={newAdmin.email} onChange={e => setNewAdmin({ ...newAdmin, email: e.target.value })} /></div>
+                        <div><Label className="text-xs font-medium text-zinc-500 mb-2 block">Password</Label><Input type="password" placeholder="Secure Password" className="rounded-xl" value={newAdmin.password} onChange={e => setNewAdmin({ ...newAdmin, password: e.target.value })} /></div>
+                        <Button className="w-full rounded-xl bg-violet-600 hover:bg-violet-700 mt-2" onClick={handleAddAdmin}>Create Admin</Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                )}
               </div>
               <div className="flex gap-2 mb-6 overflow-x-auto pb-2 custom-scrollbar">
                 {[
