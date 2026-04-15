@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #ffffff;
+    --foreground: #09090b;
+    --primary: 37 99 235;
+    --primary-container: 59 130 246;
+    --surface: #ffffff;
+    --surface-container-low: #f4f4f5;
+    --surface-container-high: #e4e4e7;
+    --surface-container-highest: #d4d4d8;
+    --outline-variant: rgba(0, 0, 0, 0.1);
+  }
+
+  .dark {
+    --background: #09090b;
+    --foreground: #fafafa;
+    --primary: 173 198 255;
+    --primary-container: 75 142 255;
+    --surface: #09090b;
+    --surface-container-low: #18181b;
+    --surface-container-high: #27272a;
+    --surface-container-highest: #3f3f46;
+    --outline-variant: rgba(255, 255, 255, 0.1);
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply backdrop-blur-xl bg-white/70 border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)];
+  }
+
+  .dark .glass {
+    @apply backdrop-blur-2xl bg-zinc-900/40 border border-zinc-800/50 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)];
+  }
+
+  .premium-gradient-btn {
+    @apply bg-gradient-to-tr from-primary-container to-primary hover:brightness-110 transition-all duration-300 shadow-lg shadow-primary/20;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-zinc-200/50;
+  }
+
+  .stagger-1 { animation-delay: 100ms; }
+  .stagger-2 { animation-delay: 200ms; }
+  .stagger-3 { animation-delay: 300ms; }
+  .stagger-4 { animation-delay: 400ms; }
+}
