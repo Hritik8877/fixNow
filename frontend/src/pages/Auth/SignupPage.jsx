@@ -34,7 +34,7 @@ export default function SignupPage() {
 
   const roles = [
     { value: 'user', label: 'User', desc: 'Concierge access' },
-    { value: 'technician', label: 'Expert', desc: 'Join our guild' },
+    { value: 'technician', label: 'technician', desc: 'Join our guild' },
   ];
 
   return (
