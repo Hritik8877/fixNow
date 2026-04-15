@@ -5,6 +5,13 @@ import createTransporter from '../config/emailTransporter.js';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+  path: '/',
+};
+
 function createAccessToken(userId, email) {
   return jwt.sign({ sub: userId, email, type: 'access' }, JWT_SECRET || 'secret', { expiresIn: '7d' });
 }
@@ -29,7 +36,7 @@ export const register = async (req, res) => {
     });
 
     const token = createAccessToken(user._id.toString(), user.email);
-    res.cookie('access_token', token, { httpOnly: true, secure: false, sameSite: 'lax', maxAge: 7 * 24 * 60 * 60 * 1000, path: '/' });
+    res.cookie('access_token', token, { ...COOKIE_OPTIONS, maxAge: 7 * 24 * 60 * 60 * 1000 });
     const userResponse = await User.findById(user._id).select('-password');
     res.json({ ...userResponse.toJSON(), token });
   } catch (err) {
@@ -61,11 +68,8 @@ export const login = async (req, res) => {
     const token = createAccessToken(user._id.toString(), user.email);
 
     res.cookie('access_token', token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
+      ...COOKIE_OPTIONS,
       maxAge: 7 * 24 * 60 * 60 * 1000,
-      path: '/'
     });
 
     const userResponse = await User.findById(user._id).select('-password');
@@ -115,7 +119,7 @@ export const updateProfile = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  res.clearCookie('access_token', { path: '/' });
+  res.clearCookie('access_token', COOKIE_OPTIONS);
   res.json({ message: 'Logged out' });
 };
 
@@ -158,11 +162,8 @@ export const forgotPassword = async (req, res) => {
     }
 
     res.cookie('verificationToken', verificationToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      ...COOKIE_OPTIONS,
       maxAge: 10 * 60 * 1000,
-      path: '/',
     });
 
     res.json({ message: 'OTP sent to your email' });
@@ -177,8 +178,13 @@ export const verifyOtp = async (req, res) => {
     const { otp } = req.body;
     const verificationToken = req.cookies.verificationToken;
 
+    console.log('--- OTP VERIFICATION DEBUG ---');
+    console.log('OTP received:', otp);
+    console.log('Cookies found:', Object.keys(req.cookies || {}));
+    console.log('Verification Token present:', !!verificationToken);
+
     if (!verificationToken) {
-      return res.status(400).json({ message: 'No verification token found' });
+      return res.status(400).json({ message: 'No verification token found. Please try sending a new OTP.' });
     }
 
     const decoded = jwt.verify(verificationToken, JWT_SECRET || 'secret');
@@ -194,14 +200,11 @@ export const verifyOtp = async (req, res) => {
     );
 
     res.cookie('resetToken', resetToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      ...COOKIE_OPTIONS,
       maxAge: 15 * 60 * 1000,
-      path: '/',
     });
 
-    res.clearCookie('verificationToken', { path: '/' });
+    res.clearCookie('verificationToken', COOKIE_OPTIONS);
     res.json({ success: true, message: 'OTP verified successfully' });
   } catch (err) {
     console.error('Error in verifyOtp:', err.name, err.message);
@@ -218,6 +221,7 @@ export const resetPassword = async (req, res) => {
     const resetToken = req.cookies.resetToken;
 
     if (!resetToken) {
+      console.log('Reset token missing in resetPassword');
       return res.status(400).json({ message: 'No reset token found' });
     }
 
@@ -237,7 +241,7 @@ export const resetPassword = async (req, res) => {
     user.password = await bcrypt.hash(newPassword, salt);
     await user.save();
 
-    res.clearCookie('resetToken', { path: '/' });
+    res.clearCookie('resetToken', COOKIE_OPTIONS);
     res.json({ message: 'Password reset successful' });
   } catch (err) {
     console.error('Error in resetPassword:', err);
